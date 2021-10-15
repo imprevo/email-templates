@@ -24,5 +24,7 @@ module.exports = {
       version: 'detect',
     },
   },
-  rules: {},
+  rules: {
+    '@typescript-eslint/no-var-requires': 0,
+  },
 };
