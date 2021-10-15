@@ -12,17 +12,20 @@ export const App = ({ config }: AppProps) => (
   <div>
     <h1>Emails:</h1>
     <div>
-      {config.emails.map((email) => (
-        <div key={email.title}>
-          <h2>{email.title}</h2>
-          {(email.data || defaultTab).map((data) => (
-            <div key={data.description}>
-              <h3>{data.description}</h3>
-              <Email template={email.template} params={data.params} />
-            </div>
-          ))}
-        </div>
-      ))}
+      {config.emails.map((email) => {
+        const tabs = email.data?.length ? email.data : defaultTab;
+        return (
+          <div key={email.builder.title}>
+            <h2>{email.builder.title}</h2>
+            {tabs.map((data) => (
+              <div key={data.description}>
+                <h3>{data.description}</h3>
+                <Email builder={email.builder} params={data.params} />
+              </div>
+            ))}
+          </div>
+        );
+      })}
     </div>
   </div>
 );

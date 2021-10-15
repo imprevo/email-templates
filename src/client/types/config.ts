@@ -1,11 +1,12 @@
+import { EmailBuilder } from '../../libs/core';
+
 export type EmailData = {
   description: string;
   params?: any;
 };
 
 export type Email = {
-  title: string;
-  template: (data?: any) => JSX.Element | string;
+  builder: EmailBuilder;
   data?: EmailData[];
 };
 

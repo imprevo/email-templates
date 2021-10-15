@@ -1,10 +1,11 @@
 import React from 'react';
+import { EmailBuilder } from '../../libs/core';
 
 type EmailProps = {
-  template: (data?: any) => JSX.Element | string;
+  builder: EmailBuilder;
   params?: any;
 };
 
-export const Email = ({ template, params }: EmailProps) => (
-  <div>{template(params)}</div>
+export const Email = ({ builder, params }: EmailProps) => (
+  <div dangerouslySetInnerHTML={{ __html: builder.build(params) }} />
 );
