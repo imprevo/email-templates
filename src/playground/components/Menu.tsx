@@ -19,7 +19,12 @@ export const Menu = ({
           key={index}
           onClick={() => setActive(index)}
         >
-          <ListItemText primary={menu} />
+          <ListItemText
+            primary={menu}
+            primaryTypographyProps={{
+              style: { whiteSpace: 'normal', wordBreak: 'break-word' },
+            }}
+          />
         </ListItem>
       ))}
     </List>
