@@ -3,7 +3,7 @@ import { StringEmailTemplate } from '../../libs/core';
 /**
  * Adaptation of https://github.com/ohsik/Simple-Responsive-HTML-Email-Template
  */
-export const simpleResponsiveTemplate = new StringEmailTemplate(
+export const responsiveTemplateV1 = new StringEmailTemplate(
   'Simple Responsive HTML Email Template',
   () => `
 <!doctype html>
