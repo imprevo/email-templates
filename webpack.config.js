@@ -1,7 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/client',
+  entry: './src/playground',
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
