@@ -1,31 +1,34 @@
 import React from 'react';
-import { AppConfig, EmailData } from '../types/config';
-import { Email } from './Email';
+import Grid from '@mui/material/Grid';
+import { AppConfig } from '../types/config';
+import { Shell } from './Shell';
+import { Menu } from './Menu';
+import { EmailCard } from './EmailCard';
 
 type AppProps = {
   config: AppConfig;
 };
 
-const defaultTab: EmailData[] = [{ description: 'Default' }];
+export const App = ({ config }: AppProps) => {
+  const [activeMenuIndex, setActiveMenuIndex] = React.useState(0);
+  const menuList = config.emails.map((email) => email.builder.title);
+  const activeEmail = config.emails[activeMenuIndex];
 
-export const App = ({ config }: AppProps) => (
-  <div>
-    <h1>Emails:</h1>
-    <div>
-      {config.emails.map((email) => {
-        const tabs = email.data?.length ? email.data : defaultTab;
-        return (
-          <div key={email.builder.title}>
-            <h2>{email.builder.title}</h2>
-            {tabs.map((data) => (
-              <div key={data.description}>
-                <h3>{data.description}</h3>
-                <Email builder={email.builder} params={data.params} />
-              </div>
-            ))}
-          </div>
-        );
-      })}
-    </div>
-  </div>
-);
+  return (
+    <Shell
+      menu={
+        <Menu
+          menuList={menuList}
+          activeIndex={activeMenuIndex}
+          setActive={setActiveMenuIndex}
+        />
+      }
+    >
+      <Grid item xs={12}>
+        {activeEmail && (
+          <EmailCard key={activeEmail.builder.title} email={activeEmail} />
+        )}
+      </Grid>
+    </Shell>
+  );
+};
