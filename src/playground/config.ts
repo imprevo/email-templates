@@ -1,6 +1,6 @@
-import { AppConfig } from './types/config';
 import { exampleEmail1, exampleEmail2, exampleEmail3 } from '../emails/example';
 import { userWelcome } from '../emails/user-welcome';
+import { AppConfig } from './types/config';
 
 export const config: AppConfig = {
   emails: [

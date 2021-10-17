@@ -1,9 +1,9 @@
-import React from 'react';
 import Grid from '@mui/material/Grid';
+import React from 'react';
 import { AppConfig } from '../types/config';
-import { Shell } from './Shell';
-import { Menu } from './Menu';
 import { EmailCard } from './EmailCard';
+import { Menu } from './Menu';
+import { Shell } from './Shell';
 
 type AppProps = {
   config: AppConfig;

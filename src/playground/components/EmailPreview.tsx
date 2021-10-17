@@ -6,6 +6,6 @@ type EmailProps = {
   params?: any;
 };
 
-export const Email = ({ builder, params }: EmailProps) => (
+export const EmailPreview = ({ builder, params }: EmailProps) => (
   <div dangerouslySetInnerHTML={{ __html: builder.build(params) }} />
 );

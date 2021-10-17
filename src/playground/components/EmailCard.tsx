@@ -1,9 +1,9 @@
-import React from 'react';
+import Paper from '@mui/material/Paper';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import Paper from '@mui/material/Paper';
+import React from 'react';
 import { Email, EmailData } from '../types/config';
-import { Email as EmailComp } from './Email';
+import { EmailPreview } from './EmailPreview';
 import { TabPanel } from './TabPanel';
 
 const defaultTab: EmailData[] = [{ description: 'Default example' }];
@@ -33,7 +33,7 @@ export const EmailCard = ({ email }: { email: Email }) => {
       </Tabs>
       {tabs.map((tab, index) => (
         <TabPanel key={index} value={activeTab} index={index}>
-          <EmailComp builder={email.builder} params={tab.params} />
+          <EmailPreview builder={email.builder} params={tab.params} />
         </TabPanel>
       ))}
     </Paper>
