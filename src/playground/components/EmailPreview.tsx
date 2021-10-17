@@ -2,7 +2,7 @@ import React from 'react';
 import { EmailBuilder } from '../../libs/core';
 
 type EmailProps = {
-  builder: EmailBuilder;
+  builder: EmailBuilder<any>;
   params?: any;
 };
 

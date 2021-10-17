@@ -6,7 +6,7 @@ export type EmailData = {
 };
 
 export type Email = {
-  builder: EmailBuilder;
+  builder: EmailBuilder<any>;
   data?: EmailData[];
 };
 
