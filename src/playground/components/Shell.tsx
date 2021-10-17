@@ -45,7 +45,12 @@ export const Shell = ({ menu, children }: ShellProps) => (
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent">
+      <Drawer
+        variant="permanent"
+        sx={{
+          height: '100vh',
+        }}
+      >
         <Toolbar />
         {menu}
       </Drawer>

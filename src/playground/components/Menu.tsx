@@ -11,7 +11,7 @@ export const Menu = ({
   setActive: (index: number) => void;
 }) => {
   return (
-    <List>
+    <List sx={{ overflow: 'auto' }}>
       {menuList.map((menu, index) => (
         <ListItem
           selected={index === activeIndex}
