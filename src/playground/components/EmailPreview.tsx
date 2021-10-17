@@ -1,5 +1,6 @@
 import React from 'react';
 import { EmailBuilder } from '../../libs/core';
+import { IFrame } from './IFrame';
 
 type EmailProps = {
   builder: EmailBuilder<any>;
@@ -7,5 +8,7 @@ type EmailProps = {
 };
 
 export const EmailPreview = ({ builder, params }: EmailProps) => (
-  <div dangerouslySetInnerHTML={{ __html: builder.build(params) }} />
+  <IFrame>
+    <div dangerouslySetInnerHTML={{ __html: builder.build(params) }} />
+  </IFrame>
 );
