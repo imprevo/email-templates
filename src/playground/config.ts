@@ -1,4 +1,5 @@
 import { exampleEmail1, exampleEmail2, exampleEmail3 } from '../emails/example';
+import { simpleResponsiveTemplate } from '../emails/simple-responsive-template';
 import { userWelcome } from '../emails/user-welcome';
 import { AppConfig } from './types/config';
 
@@ -25,6 +26,9 @@ export const config: AppConfig = {
           params: { name: 'Anna', product: 'Another Super Product' },
         },
       ],
+    },
+    {
+      builder: simpleResponsiveTemplate,
     },
   ],
 };
