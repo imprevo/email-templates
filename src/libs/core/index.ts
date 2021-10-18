@@ -1,30 +1,46 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 
+export type HTMLTransformer = (html: string) => Promise<string>;
+
 export interface EmailBuilder<Params = void> {
   readonly title: string;
   build(params: Params): Promise<string>;
 }
 
-export class StringEmailTemplate<Params = void>
-  implements EmailBuilder<Params>
-{
+export class EmailBuilderBase<Params = void> implements EmailBuilder<Params> {
+  protected transformations: HTMLTransformer[] = [];
+
   constructor(
     public title: string,
     protected template: (params: Params) => string
   ) {}
 
+  protected async applyTransformations(html: string) {
+    if (!this.transformations.length) return html;
+    return this.transformations.reduce(
+      (res, next) => res.then((r) => next(r)),
+      Promise.resolve(html)
+    );
+  }
+
   async build(params: Params) {
-    return this.template(params);
+    const html = this.template(params);
+    return this.applyTransformations(html);
   }
 }
 
-export class ReactEmailTemplate<Params = void> implements EmailBuilder<Params> {
-  constructor(
-    public title: string,
-    protected template: (params: Params) => JSX.Element
-  ) {}
+export const createStringTemplate = <Params = void>(
+  title: string,
+  template: (params: Params) => string
+) => {
+  return new EmailBuilderBase<Params>(title, template);
+};
 
-  async build(params: Params) {
-    return renderToStaticMarkup(this.template(params));
-  }
-}
+export const createReactTemplate = <Params = void>(
+  title: string,
+  template: (params: Params) => JSX.Element
+) => {
+  return new EmailBuilderBase<Params>(title, (params) =>
+    renderToStaticMarkup(template(params))
+  );
+};

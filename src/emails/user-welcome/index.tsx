@@ -1,12 +1,12 @@
 import React from 'react';
-import { ReactEmailTemplate } from '../../libs/core';
+import { createReactTemplate } from '../../libs/core';
 
 type UserWelcomeProps = {
   name: string;
   product: string;
 };
 
-export const userWelcome = new ReactEmailTemplate(
+export const userWelcome = createReactTemplate(
   'User welcome email',
   ({ name, product }: UserWelcomeProps) => (
     <table>

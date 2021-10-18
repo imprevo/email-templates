@@ -1,9 +1,9 @@
-import { StringEmailTemplate } from '../../libs/core';
+import { createStringTemplate } from '../../libs/core';
 
 /**
  * Adaptation of https://github.com/leemunroe/responsive-html-email-template
  */
-export const responsiveTemplateV2 = new StringEmailTemplate(
+export const responsiveTemplateV2 = createStringTemplate(
   'Responsive HTML Email Template',
   () => `
   <!doctype html>
