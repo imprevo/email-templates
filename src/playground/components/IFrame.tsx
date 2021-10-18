@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
+const SCROLL_OFFSET = 20;
+
 type IFrameProps = React.PropsWithChildren<any>;
 
 export const IFrame = ({ children, ...props }: IFrameProps) => {
@@ -10,7 +12,7 @@ export const IFrame = ({ children, ...props }: IFrameProps) => {
   useEffect(() => {
     const handleResize = () => {
       if (iframeRef && mountNode) {
-        iframeRef.height = mountNode.scrollHeight.toString();
+        iframeRef.height = `${mountNode.scrollHeight + SCROLL_OFFSET}px`;
       }
     };
     handleResize();
