@@ -9,8 +9,7 @@ export const inlineCSS: HTMLTransformer = (document) => {
 };
 
 const getStyleSheet = (document: Document) => {
-  // TODO: get only styles
-  const stylesheetList = Array.from(document.head.children)
+  const stylesheetList = findAllStyles(document)
     .map((el) => el.innerHTML)
     .join('\n');
   // TODO: sort by specificity
@@ -23,7 +22,9 @@ const inlineCssRules = (
 ) => {
   styleSheet.cssRules.forEach((rule) => {
     if (rule instanceof CSSOM.CSSStyleRule) {
-      const elements = findElementsByRule(document, rule);
+      const elements = document.querySelectorAll<HTMLElement>(
+        rule.selectorText
+      );
       elements.forEach((element) => {
         inlineRule(element, rule);
       });
@@ -31,15 +32,10 @@ const inlineCssRules = (
   });
 };
 
-const findElementsByRule = (document: Document, rule: CSSOM.CSSStyleRule) => {
-  return document.querySelectorAll<HTMLElement>(rule.selectorText);
-};
-
 const inlineRule = (element: HTMLElement, rule: CSSOM.CSSStyleRule) => {
   const properties = getCSSProperties(rule);
   properties.forEach(({ property, value }) => {
-    // @ts-ignore TODO: fix error
-    element.style[property] = value;
+    element.style.setProperty(property, value);
   });
 };
 
@@ -54,7 +50,11 @@ const getCSSProperties = (rule: CSSOM.CSSStyleRule) => {
 };
 
 const removeStyles = (document: Document) => {
-  // TODO: remove only styles
-  document.head.innerHTML = '';
+  findAllStyles(document).forEach((style) => {
+    style.parentNode?.removeChild(style);
+  });
   return document;
 };
+
+const findAllStyles = (document: Document) =>
+  Array.from(document.querySelectorAll('style'));
