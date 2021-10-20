@@ -23,62 +23,64 @@ describe('TemplateBuilder', () => {
     });
   });
 
-  describe('transformations', () => {
+  describe('plugin', () => {
     it('should not be applied before build', async () => {
-      const stub = jest.fn((dom: Document) => dom);
-      new TemplateBuilder('Email title', () => 'Email content', [stub]);
-      expect(stub).not.toBeCalled();
+      const plugin = jest.fn((document: Document) => document);
+      new TemplateBuilder('Email title', () => 'Email content', [plugin]);
+      expect(plugin).not.toBeCalled();
     });
 
     it('should be applied during build', async () => {
-      const stub = jest.fn((dom: Document) => dom);
+      const plugin = jest.fn((document: Document) => document);
       const builder = new TemplateBuilder(
         'Email title',
         () => 'Email content',
-        [stub]
+        [plugin]
       );
       await builder.build();
-      expect(stub).toBeCalled();
-    });
-
-    it('each should be applied', async () => {
-      const transformer = jest.fn((dom: Document) => dom);
-      const builder = new TemplateBuilder(
-        'Email title',
-        () => 'Email content',
-        [transformer, transformer]
-      );
-      await builder.build();
-      expect(transformer).toBeCalledTimes(2);
+      expect(plugin).toBeCalled();
     });
 
     it('should modify email template', async () => {
-      const transformer = (dom: Document) => {
-        dom.body.innerHTML = 'Replaced content';
-        return dom;
+      const plugin = (document: Document) => {
+        document.body.innerHTML = 'Replaced content';
+        return document;
       };
       const builder = new TemplateBuilder(
         'Email title',
         () => 'Email content',
-        [transformer]
+        [plugin]
       );
       const result = await builder.build();
       expect(result).toContain('<body>Replaced content</body>');
     });
+  });
+
+  describe('multiple plugins', () => {
+    it('should be applied', async () => {
+      const plugin = jest.fn((document: Document) => document);
+      const builder = new TemplateBuilder(
+        'Email title',
+        () => 'Email content',
+        [plugin, plugin]
+      );
+      await builder.build();
+      expect(plugin).toBeCalledTimes(2);
+    });
 
     it('should be applied in order', async () => {
-      const transformer1 = (dom: Document) => {
-        dom.body.innerHTML += ' first';
-        return dom;
+      const plugin1 = (document: Document) => {
+        document.body.innerHTML += ' first';
+        return document;
       };
-      const transformer2 = (dom: Document) => {
-        dom.body.innerHTML += ' second';
-        return dom;
+      const plugin2 = (document: Document) => {
+        document.body.innerHTML += ' second';
+        return document;
       };
       const builder = new TemplateBuilder(
         'Email title',
         () => 'Email content',
-        [transformer1, transformer2]
+        [plugin1, plugin2]
       );
       const result = await builder.build();
       expect(result).toContain('<body>Email content first second</body>');

@@ -1,7 +1,7 @@
 import CSSOM from 'cssom';
-import { HTMLTransformer } from '../types';
+import { EmailPlugin } from '../types';
 
-export const inlineCSS: HTMLTransformer = (document) => {
+export const inlineCSS: EmailPlugin = (document) => {
   const styleSheet = getStyleSheet(document);
   inlineCssRules(document, styleSheet);
   removeStyleTags(document);
