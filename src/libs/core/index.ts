@@ -1,11 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-
-export type HTMLTransformer = (html: string) => Promise<string>;
-
-export interface EmailBuilder<Params = void> {
-  readonly title: string;
-  build(params: Params): Promise<string>;
-}
+import { EmailBuilder, HTMLTransformer } from './types';
 
 export class EmailBuilderBase<Params = void> implements EmailBuilder<Params> {
   protected transformations: HTMLTransformer[] = [];

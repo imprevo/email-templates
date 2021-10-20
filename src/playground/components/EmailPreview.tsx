@@ -1,6 +1,6 @@
 import { Box, CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { EmailBuilder } from '../../libs/core';
+import { EmailBuilder } from '../../libs/core/types';
 import { IFrame } from './IFrame';
 
 type EmailProps = {

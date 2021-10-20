@@ -1,4 +1,4 @@
-import { EmailBuilder } from '../../libs/core';
+import { EmailBuilder } from '../../libs/core/types';
 
 export type EmailData = {
   description: string;

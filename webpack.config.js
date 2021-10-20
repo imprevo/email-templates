@@ -1,10 +1,15 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  target: 'web',
   entry: './src/playground',
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
+    fallback: {
+      jsdom: false,
+    },
   },
+  externals: ['jsdom'],
   module: {
     rules: [
       {
