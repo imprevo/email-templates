@@ -40,29 +40,35 @@ const inlineCssRules = (
   styleSheet: CSSOM.CSSStyleSheet
 ) => {
   styleSheet.cssRules.forEach((rule) => {
-    const list = findElByRule(document, rule as any);
-    list.forEach((el) => {
-      if (el) {
-        inlineRule(el, rule as any);
-      }
-    });
+    if (rule instanceof CSSOM.CSSStyleRule) {
+      const elements = findElementsByRule(document, rule);
+      elements.forEach((element) => {
+        inlineRule(element, rule);
+      });
+    }
   });
 };
 
-const findElByRule = (document: Document, rule: CSSOM.CSSStyleRule) => {
+const findElementsByRule = (document: Document, rule: CSSOM.CSSStyleRule) => {
   return document.querySelectorAll<HTMLElement>(rule.selectorText);
 };
 
-const inlineRule = (el: HTMLElement, rule: CSSOM.CSSStyleSheet) => {
-  getCSSRules(rule).forEach(([property, value]) => {
+const inlineRule = (element: HTMLElement, rule: CSSOM.CSSStyleRule) => {
+  const properties = getCSSProperties(rule);
+  properties.forEach(({ property, value }) => {
     // @ts-ignore TODO: fix error
-    el.style[property] = value;
+    element.style[property] = value;
   });
 };
 
-const getCSSRules = (rule: CSSOM.CSSStyleSheet): [string, string][] => {
-  // TODO: how?
-  return [['color', '#f00']];
+const getCSSProperties = (rule: CSSOM.CSSStyleRule) => {
+  const rules: { property: string; value: string }[] = [];
+  for (let i = 0; i < rule.style.length; i++) {
+    const property = rule.style[i];
+    const value = rule.style.getPropertyValue(property);
+    rules.push({ property, value });
+  }
+  return rules;
 };
 
 const removeStyles = (document: Document) => {

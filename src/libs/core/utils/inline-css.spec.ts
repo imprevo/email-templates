@@ -25,7 +25,7 @@ describe('inlineCSS utils', () => {
       });
 
       it('should contain <p> with inline styles', () => {
-        const html = '<p style="color:red;">hello world</p>';
+        const html = '<p style="color:black;">hello world</p>';
         const result = inlineCSS(html);
         expect(result).toContain(`<body>${html}</body>`);
       });
@@ -33,16 +33,23 @@ describe('inlineCSS utils', () => {
 
     describe('<style> tag', () => {
       it('should be inlined', () => {
-        const styles = '<style>p {color:red}</style>';
+        const styles = '<style>p {color:black}</style>';
         const html = '<p>hello world</p>';
         const result = inlineCSS(styles + html);
+        expect(result).toContain('<p style="color: black;">hello world</p>');
+      });
+
+      it('should be inlined and merged', () => {
+        const styles = '<style>p {padding:10px}</style>';
+        const html = '<p style="color:black;">hello world</p>';
+        const result = inlineCSS(styles + html);
         expect(result).toContain(
-          '<body><p style="color: rgb(255, 0, 0);">hello world</p></body>'
+          '<p style="color: black; padding: 10px;">hello world</p>'
         );
       });
 
       it('should be removed from <head>', () => {
-        const styles = '<style>p {color:red}</style>';
+        const styles = '<style>p {color:black}</style>';
         const html = '<p>hello world</p>';
         const result = inlineCSS(styles + html);
         expect(result).toContain('<head></head>');
