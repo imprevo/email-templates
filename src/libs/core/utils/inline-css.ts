@@ -4,12 +4,12 @@ import { HTMLTransformer } from '../types';
 export const inlineCSS: HTMLTransformer = (document) => {
   const styleSheet = getStyleSheet(document);
   inlineCssRules(document, styleSheet);
-  removeStyles(document);
+  removeStyleTags(document);
   return document;
 };
 
 const getStyleSheet = (document: Document) => {
-  const stylesheetList = findAllStyles(document)
+  const stylesheetList = findAllStyleTags(document)
     .map((el) => el.innerHTML)
     .join('\n');
   // TODO: sort by specificity
@@ -49,12 +49,12 @@ const getCSSProperties = (rule: CSSOM.CSSStyleRule) => {
   return rules;
 };
 
-const removeStyles = (document: Document) => {
-  findAllStyles(document).forEach((style) => {
+const removeStyleTags = (document: Document) => {
+  findAllStyleTags(document).forEach((style) => {
     style.parentNode?.removeChild(style);
   });
   return document;
 };
 
-const findAllStyles = (document: Document) =>
+const findAllStyleTags = (document: Document) =>
   Array.from(document.querySelectorAll('style'));
