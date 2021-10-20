@@ -1,5 +1,5 @@
 import React from 'react';
-import { createReactTemplate } from '../../libs/core';
+import { createReactTemplate } from '../../libs/builders';
 
 type UserWelcomeProps = {
   name: string;

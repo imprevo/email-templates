@@ -1,5 +1,5 @@
 import React from 'react';
-import { createReactTemplate, createStringTemplate } from '../libs/core';
+import { createReactTemplate, createStringTemplate } from '../libs/builders';
 
 export const exampleEmail1 = createStringTemplate(
   'Simple string',

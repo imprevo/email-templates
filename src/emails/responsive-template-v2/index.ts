@@ -1,4 +1,4 @@
-import { createStringTemplate } from '../../libs/core';
+import { createStringTemplate } from '../../libs/builders';
 
 /**
  * Adaptation of https://github.com/leemunroe/responsive-html-email-template

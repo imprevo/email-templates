@@ -1,4 +1,4 @@
-import { createStringTemplate } from '../../libs/core';
+import { createStringTemplate } from '../../libs/builders';
 
 /**
  * Adaptation of https://github.com/ohsik/Simple-Responsive-HTML-Email-Template

@@ -1,4 +1,4 @@
-import { parseHTML } from './dom';
+import { parseHTML } from '../core/utils/dom';
 import { inlineCSS } from './inline-css';
 
 describe('inlineCSS utils', () => {

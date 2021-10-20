@@ -1,5 +1,5 @@
 import CSSOM from 'cssom';
-import { EmailPlugin } from '../types';
+import { EmailPlugin } from '../core';
 
 export const inlineCSS: EmailPlugin = (document) => {
   const styleSheet = getStyleSheet(document);
