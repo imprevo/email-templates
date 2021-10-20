@@ -1,5 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { EmailBuilder, HTMLTransformer } from './types';
+import { parseHTML, serializeHTML } from './utils/dom';
 
 export class EmailBuilderBase<Params = void> implements EmailBuilder<Params> {
   protected transformations: HTMLTransformer[] = [];
@@ -9,17 +10,21 @@ export class EmailBuilderBase<Params = void> implements EmailBuilder<Params> {
     protected template: (params: Params) => string
   ) {}
 
-  protected async applyTransformations(html: string) {
-    if (!this.transformations.length) return html;
+  protected async applyTransformations(document: Document) {
+    if (!this.transformations.length) {
+      return document;
+    }
     return this.transformations.reduce(
       (res, next) => res.then((r) => next(r)),
-      Promise.resolve(html)
+      Promise.resolve(document)
     );
   }
 
   async build(params: Params) {
     const html = this.template(params);
-    return this.applyTransformations(html);
+    const document = parseHTML(html);
+    const newDocument = await this.applyTransformations(document);
+    return serializeHTML(newDocument);
   }
 }
 

@@ -1,29 +1,11 @@
 import CSSOM from 'cssom';
 import { HTMLTransformer } from '../types';
 
-export const inlineCSS: HTMLTransformer = (html) => {
-  const document = parseHTML(html);
+export const inlineCSS: HTMLTransformer = (document) => {
   const styleSheet = getStyleSheet(document);
   inlineCssRules(document, styleSheet);
   removeStyles(document);
-  return serializeHTML(document);
-};
-
-const parseHTML = (html: string): Document => {
-  if (typeof window === 'undefined') {
-    // server side
-    const { JSDOM } = require('jsdom');
-
-    const dom = new JSDOM(html);
-    return dom.window.document;
-  }
-  // browser side
-  return new DOMParser().parseFromString(html, 'text/html');
-};
-
-const serializeHTML = (document: Document) => {
-  // TODO: get doctype
-  return '<!DOCTYPE html>' + document.documentElement.outerHTML;
+  return document;
 };
 
 const getStyleSheet = (document: Document) => {
