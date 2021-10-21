@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:server": "nodemon --delay 100ms --watch src src/server/index.ts --exec ts-node",
-    "start:playground": "webpack serve --mode=development",
+    "start:playground": "webpack serve -c src/playground/webpack.config.js --mode=development",
     "test": "jest",
     "test:watch": "jest --watch",
     "prepare": "husky install"
