@@ -4,14 +4,14 @@ import { EmailPlugin } from '../core';
 export const inlineCSS: EmailPlugin = (document) => {
   const styleSheet = getStyleSheet(document);
   inlineCssRules(document, styleSheet);
-  removeStyleTags(document);
+  removeStyleTags(document, styleSheet);
   return document;
 };
 
 const getStyleSheet = (document: Document) => {
   const stylesheetList = findAllStyleTags(document)
     .map((el) => el.innerHTML)
-    .join('\n');
+    .join('');
   // TODO: sort by specificity
   return CSSOM.parse(stylesheetList);
 };
@@ -49,10 +49,23 @@ const getCSSProperties = (rule: CSSOM.CSSStyleRule) => {
   return rules;
 };
 
-const removeStyleTags = (document: Document) => {
+const removeStyleTags = (
+  document: Document,
+  styleSheet: CSSOM.CSSStyleSheet
+) => {
   findAllStyleTags(document).forEach((style) => {
     style.parentNode?.removeChild(style);
   });
+  const notInlinedStyles = styleSheet.cssRules
+    .filter((rule) => !(rule instanceof CSSOM.CSSStyleRule))
+    .map((rule) => rule.cssText)
+    .join('');
+  if (notInlinedStyles) {
+    const style = document
+      .createElement('style')
+      .appendChild(document.createTextNode(notInlinedStyles));
+    document.head.appendChild(style);
+  }
   return document;
 };
 

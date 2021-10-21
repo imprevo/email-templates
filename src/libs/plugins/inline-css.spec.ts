@@ -41,13 +41,21 @@ describe('inlineCSS utils', () => {
       });
     });
 
-    describe('should remove', () => {
-      it('<style>', async () => {
-        const styles = '<style>p {color:black}</style>';
-        const html = '<p>hello world</p>';
-        const dom = parseHTML(styles + html);
+    describe('<style>', () => {
+      const styles = '<style>p {color:black}</style>';
+      const mediaStyles = '<style>@media only screen {p {color: red;}}</style>';
+      const html = '<p>hello world</p>';
+
+      it('with inlined styles should be removed', async () => {
+        const dom = parseHTML(styles + mediaStyles + html);
         const result = await inlineCSS(dom);
-        expect(result.head.innerHTML).toContain('');
+        expect(result.head.innerHTML).not.toContain(styles);
+      });
+
+      it('with @media rules should not be removed', async () => {
+        const dom = parseHTML(styles + mediaStyles + html);
+        const result = await inlineCSS(dom);
+        expect(result.head.innerHTML).not.toContain(styles);
       });
     });
   });
