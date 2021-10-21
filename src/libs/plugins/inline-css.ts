@@ -4,7 +4,8 @@ import { EmailPlugin } from '../core';
 export const inlineCSS: EmailPlugin = (document) => {
   const styleSheet = getStyleSheet(document);
   inlineCssRules(document, styleSheet);
-  removeStyleTags(document, styleSheet);
+  removeStyleTags(document);
+  addNotInlinedCSSRules(document, styleSheet);
   return document;
 };
 
@@ -49,25 +50,32 @@ const getCSSProperties = (rule: CSSOM.CSSStyleRule) => {
   return rules;
 };
 
-const removeStyleTags = (
-  document: Document,
-  styleSheet: CSSOM.CSSStyleSheet
-) => {
+const removeStyleTags = (document: Document) => {
   findAllStyleTags(document).forEach((style) => {
     style.parentNode?.removeChild(style);
   });
+  return document;
+};
+
+const addNotInlinedCSSRules = (
+  document: Document,
+  styleSheet: CSSOM.CSSStyleSheet
+) => {
   const notInlinedStyles = styleSheet.cssRules
     .filter((rule) => !(rule instanceof CSSOM.CSSStyleRule))
     .map((rule) => rule.cssText)
     .join('');
   if (notInlinedStyles) {
-    const style = document
-      .createElement('style')
-      .appendChild(document.createTextNode(notInlinedStyles));
+    const style = createStyleTag(document, notInlinedStyles);
     document.head.appendChild(style);
   }
-  return document;
 };
 
 const findAllStyleTags = (document: Document) =>
   Array.from(document.querySelectorAll('style'));
+
+const createStyleTag = (document: Document, styles: string) => {
+  const style = document.createElement('style');
+  style.appendChild(document.createTextNode(styles));
+  return style;
+};

@@ -55,7 +55,7 @@ describe('inlineCSS utils', () => {
       it('with @media rules should not be removed', async () => {
         const dom = parseHTML(styles + mediaStyles + html);
         const result = await inlineCSS(dom);
-        expect(result.head.innerHTML).not.toContain(styles);
+        expect(result.head.innerHTML).toContain(mediaStyles);
       });
     });
   });
